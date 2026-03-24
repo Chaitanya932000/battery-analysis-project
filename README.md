@@ -4,13 +4,32 @@ Author: Chaitanya Rajendra Patil
 
 ## Project Overview
 
-This project provides a complete Python workflow to analyze battery electrochemical experiments from Excel datasets. It supports three common test types:
+As a student, I built this project to analyse battery electrochemical experiment data from CV, GCD, and EIS tests using Python. My main goal was to make one simple workflow that reads raw Excel files, cleans and aligns the data, and gives plots + summary tables in one run.
+
+It supports three common test types:
 
 - Cyclic Voltammetry (CV)
 - Galvanostatic Charge-Discharge (GCD)
 - Electrochemical Impedance Spectroscopy (EIS)
 
-The pipeline automatically reads raw experiment files, generates comparative plots, extracts key metrics, and exports summary tables for reporting.
+The pipeline reads raw experiment files automatically, generates comparison plots, extracts key metrics, and exports summary tables for reporting.
+
+## Motivation
+
+Battery electrochemical analysis is important for understanding battery material performance. I created this project to reduce manual effort in CV, GCD, and EIS data handling, so I can spend more time on interpretation and discussion of results.
+
+## Learning Outcome
+
+Through this project I learned how to:
+
+- preprocess and standardize electrochemical datasets from different instrument exports
+- generate CV, GCD, Nyquist, and Bode plots programmatically
+- extract key performance indicators and summarize them in report-ready CSV outputs
+- build a repeatable workflow that can be reused for future battery experiments
+
+## Personal Note
+
+I made this project as part of my learning in battery data analysis. While building it, I improved my confidence in working with real experimental files, especially when column names and file formats are not always consistent. This project helped me connect theory with practical data processing.
 
 ## Project Structure
 
@@ -72,7 +91,7 @@ The code performs flexible column matching (for example, `Potential`, `Voltage`,
 
 ## Results and Insights
 
-Generated outputs are saved automatically:
+Generated outputs are saved automatically after running the pipeline:
 
 - **Figures**: `outputs/figures`
   - `cv_comparison.png`
@@ -85,7 +104,7 @@ Generated outputs are saved automatically:
   - `eis_summary.csv`
   - `analysis_run_summary.csv`
 
-These outputs support interpretation of kinetics, charge-discharge behavior, and impedance trends across multiple operating conditions.
+These outputs help me interpret kinetics, charge-discharge behavior, and impedance trends across different operating conditions.
 
 ## Technologies Used
 
@@ -129,7 +148,7 @@ These outputs support interpretation of kinetics, charge-discharge behavior, and
 ## GitHub Readiness
 
 - Clean modular source code in `src/`
-- Reproducible outputs saved in dedicated folders
-- Documented project structure and execution steps
-- Notebook workflow for exploratory and report-ready analysis
+- Reproducible outputs in dedicated folders
+- Documented project structure and run steps
+- Notebook workflow for exploratory analysis and reporting
 
