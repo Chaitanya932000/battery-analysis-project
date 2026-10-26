@@ -1,154 +1,92 @@
-# Battery Electrochemical Data Analysis Project
+# Battery Electrochemical Data Analysis
 
-Author: Chaitanya Rajendra Patil
+![Python](https://img.shields.io/badge/Python-3.x-blue) ![pandas](https://img.shields.io/badge/pandas-data%20wrangling-150458) ![Streamlit](https://img.shields.io/badge/Streamlit-dashboard-FF4B4B)
 
-## Project Overview
+An end-to-end Python pipeline that turns raw battery lab exports into clean data, comparison plots and report-ready summary tables, with an interactive Streamlit dashboard on top.
 
-As a student, I built this project to analyse battery electrochemical experiment data from CV, GCD, and EIS tests using Python. My main goal was to make one simple workflow that reads raw Excel files, cleans and aligns the data, and gives plots + summary tables in one run.
+**Author:** Chaitanya Rajendra Patil
 
-It supports three common test types:
+## Overview
 
-- Cyclic Voltammetry (CV)
-- Galvanostatic Charge-Discharge (GCD)
-- Electrochemical Impedance Spectroscopy (EIS)
+Electrochemical lab instruments export data in inconsistent formats, with column names, units and file types that change between runs. Processing them by hand is slow and error-prone. This project automates the whole workflow in one run for three common test types:
 
-The pipeline reads raw experiment files automatically, generates comparison plots, extracts key metrics, and exports summary tables for reporting.
+- **Cyclic Voltammetry (CV)**
+- **Galvanostatic Charge-Discharge (GCD)**
+- **Electrochemical Impedance Spectroscopy (EIS)**
 
-## Motivation
+## Key features
 
-Battery electrochemical analysis is important for understanding battery material performance. I created this project to reduce manual effort in CV, GCD, and EIS data handling, so I can spend more time on interpretation and discussion of results.
+- Automatic loading of every `.xlsx` / `.xls` file per test type
+- Flexible column matching (e.g. Potential/Voltage, Current, Frequency, Z′/Z″ variants) so it works with typical instrument exports
+- Data cleaning and standardisation (e.g. GCD columns normalised to `Time_s`, `Voltage_V`)
+- Automated plots: CV curves, GCD curves, Nyquist and Bode plots
+- Metric extraction: anodic/cathodic peak currents, charge/discharge durations, impedance summaries
+- CSV summary tables for reporting
+- Streamlit dashboard with tabs for CV, GCD, EIS and Summary, plus one-click pipeline runs
 
-## Learning Outcome
+## Skills demonstrated
 
-Through this project I learned how to:
+Data cleaning and wrangling (pandas, NumPy) · scientific analysis (SciPy) · data visualisation (Matplotlib, Seaborn) · dashboarding (Streamlit) · modular, reusable Python code · exploratory analysis in Jupyter
 
-- preprocess and standardize electrochemical datasets from different instrument exports
-- generate CV, GCD, Nyquist, and Bode plots programmatically
-- extract key performance indicators and summarize them in report-ready CSV outputs
-- build a repeatable workflow that can be reused for future battery experiments
+## Project structure
 
-## Personal Note
-
-I made this project as part of my learning in battery data analysis. While building it, I improved my confidence in working with real experimental files, especially when column names and file formats are not always consistent. This project helped me connect theory with practical data processing.
-
-## Project Structure
-
-```text
+```
 battery-analysis-project/
-├── data/
-│   ├── raw/
-│   │   ├── CV/
-│   │   ├── GCD/
-│   │   └── EIS/
-│   └── processed/
-├── notebooks/
 ├── src/
-├── outputs/
-│   ├── figures/
-│   └── tables/
-├── README.md
-├── requirements.txt
-├── main.py
-└── dashboard.py
+│   ├── config.py          # paths and settings
+│   ├── io_utils.py        # file loading and column matching
+│   ├── cv_analysis.py     # CV plots and peak extraction
+│   ├── gcd_analysis.py    # GCD plots and durations
+│   ├── eis_analysis.py    # Nyquist / Bode plots and summaries
+│   └── pipeline.py        # runs the full workflow
+├── notebooks/             # 01_data_loading → 05_summary
+├── data/raw/{CV,GCD,EIS}/ # put your Excel exports here
+├── outputs/               # generated figures and tables (created on run)
+├── main.py                # run the full pipeline
+├── dashboard.py           # Streamlit dashboard
+└── requirements.txt
 ```
 
-## Dataset Description
+## Getting started
 
-Place your experiment datasets as Excel files in the following folders:
+```bash
+git clone https://github.com/Chaitanya932000/battery-analysis-project.git
+cd battery-analysis-project
 
-- `data/raw/CV` for cyclic voltammetry files
-- `data/raw/GCD` for charge-discharge files
-- `data/raw/EIS` for impedance files
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
 
-The loader also auto-detects legacy locations if the project folders are empty:
+pip install -r requirements.txt
+```
 
-- `D:\chai\CV`
-- `D:\chai\GCD` (including extensionless instrument exports)
-- EIS files in `D:\chai` matching `*imp*.xlsx`
+1. Put your Excel exports into `data/raw/CV`, `data/raw/GCD` and `data/raw/EIS`.
+2. Run the full analysis:
+   ```bash
+   python main.py
+   ```
+3. Or open the interactive dashboard:
+   ```bash
+   streamlit run dashboard.py
+   ```
+4. Optional: explore step by step in the `notebooks/` folder with `jupyter notebook`.
 
-The code performs flexible column matching (for example, `Potential`, `Voltage`, `Current`, `Frequency`, and impedance column variants) so it can work with typical instrument exports.
+## Outputs
 
-## Analysis Workflow
+| Type | Files (saved to `outputs/`) |
+|---|---|
+| Figures | `cv_comparison.png`, `gcd_comparison.png`, `eis_nyquist.png`, `eis_bode.png` |
+| Tables | `cv_peak_summary.csv`, `gcd_summary.csv`, `eis_summary.csv`, `analysis_run_summary.csv` |
 
-1. **Data Loading**
-   - Read all `.xlsx`/`.xls` files from each experiment folder.
-2. **CV Analysis**
-   - Plot potential vs current curves.
-   - Compare scans/files on one graph.
-   - Extract anodic and cathodic peak currents.
-   - Save `cv_peak_summary.csv`.
-3. **GCD Analysis**
-   - Standardize columns to `Time_s` and `Voltage_V`.
-   - Plot time vs voltage curves for all files.
-   - Estimate charge/discharge durations.
-   - Save `gcd_summary.csv`.
-4. **EIS Analysis**
-   - Create Nyquist plots (`Z'` vs `-Z''`).
-   - Create Bode magnitude plots (frequency vs `|Z|`).
-   - Save `eis_summary.csv`.
-5. **Run Summary**
-   - Save `analysis_run_summary.csv` with processed record counts.
+These outputs make it quick to compare reaction kinetics, charge-discharge behaviour and impedance trends across samples and operating conditions.
 
-## Results and Insights
+## What I learned
 
-Generated outputs are saved automatically after running the pipeline:
+- Pre-processing and standardising datasets from different instrument exports
+- Generating scientific plots programmatically
+- Extracting KPIs into clean, report-ready CSV tables
+- Building a repeatable workflow that can be reused for future experiments
 
-- **Figures**: `outputs/figures`
-  - `cv_comparison.png`
-  - `gcd_comparison.png`
-  - `eis_nyquist.png`
-  - `eis_bode.png`
-- **Tables**: `outputs/tables`
-  - `cv_peak_summary.csv`
-  - `gcd_summary.csv`
-  - `eis_summary.csv`
-  - `analysis_run_summary.csv`
+## Tech stack
 
-These outputs help me interpret kinetics, charge-discharge behavior, and impedance trends across different operating conditions.
-
-## Technologies Used
-
-- Python 3.x
-- pandas
-- numpy
-- matplotlib
-- seaborn
-- scipy
-- openpyxl
-- jupyter
-- streamlit
-
-## Setup and Usage
-
-1. Open terminal in project root:
-   - `D:\chai\battery-analysis-project`
-2. Create virtual environment (recommended):
-   - `python -m venv .venv`
-   - `.venv\Scripts\activate`
-3. Install dependencies:
-   - `pip install -r requirements.txt`
-4. Add raw Excel datasets into their respective folders under `data/raw`.
-5. Run complete analysis:
-   - `python main.py`
-6. Launch notebooks (optional):
-   - `jupyter notebook`
-7. Launch dashboard:
-   - `streamlit run dashboard.py`
-
-## Dashboard Features
-
-- Interactive tabs for CV, GCD, EIS, and Summary.
-- Visual comparison of:
-  - CV: Potential vs Current curves across files/scan rates
-  - GCD: Time vs Voltage curves across files/current densities
-  - EIS: Nyquist and Bode plots across impedance files
-- Live summary tables shown in-app.
-- One-click full pipeline execution from dashboard and table preview.
-
-## GitHub Readiness
-
-- Clean modular source code in `src/`
-- Reproducible outputs in dedicated folders
-- Documented project structure and run steps
-- Notebook workflow for exploratory analysis and reporting
-
+Python · pandas · NumPy · SciPy · Matplotlib · Seaborn · openpyxl · Jupyter · Streamlit
